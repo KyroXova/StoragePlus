@@ -2,6 +2,7 @@ package com.kyroxova.storageplus.init;
 
 import com.kyroxova.storageplus.compartments.CompartmentType;
 import com.kyroxova.storageplus.compartments.block.BlockCompartment;
+import com.kyroxova.storageplus.compartments.tile.TileEntityCompartment;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 
@@ -27,6 +28,8 @@ public class ModBlocks {
         COMPARTMENT_DIAMOND = registerBlock(new BlockCompartment(CompartmentType.DIAMOND), "compartment_diamond");
         COMPARTMENT_STAINLESS_STEEL = registerBlock(new BlockCompartment(CompartmentType.STAINLESS_STEEL), "compartment_stainless_steel");
         COMPARTMENT_EMERALD = registerBlock(new BlockCompartment(CompartmentType.EMERALD), "compartment_emerald");
+
+        GameRegistry.registerTileEntity(TileEntityCompartment.class, "storageplus_compartment");
     }
 
     private static Block registerBlock(Block block, String name) {

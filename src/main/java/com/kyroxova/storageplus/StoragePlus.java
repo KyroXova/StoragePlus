@@ -1,7 +1,9 @@
 package com.kyroxova.storageplus;
 
+import com.kyroxova.storageplus.handler.GuiHandler;
 import com.kyroxova.storageplus.init.ModBlocks;
 import com.kyroxova.storageplus.init.ModItems;
+import com.kyroxova.storageplus.network.PacketHandler;
 import com.kyroxova.storageplus.proxy.CommonProxy;
 import com.kyroxova.storageplus.reference.Reference;
 import cpw.mods.fml.common.Mod;
@@ -9,6 +11,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 
 @Mod(
@@ -33,6 +36,7 @@ public class StoragePlus {
         logger = event.getModLog();
         logger.info("Storage Plus (MC 1.7.9) pre-initialization...");
 
+        PacketHandler.init();
         ModBlocks.init();
         ModItems.init();
 
@@ -42,6 +46,7 @@ public class StoragePlus {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         logger.info("Storage Plus (MC 1.7.9) initialization...");
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         proxy.init(event);
     }
 
