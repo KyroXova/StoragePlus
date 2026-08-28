@@ -14,7 +14,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -33,10 +36,27 @@ public class BlockCompartment extends BlockContainer {
         this.setResistance(type.getResistance());
         this.setStepSound(type == CompartmentType.WOOD ? soundTypeWood : soundTypeMetal);
         this.setCreativeTab(ModCreativeTab.TAB_STORAGE_PLUS);
+        this.useNeighborBrightness = true;
     }
 
     public CompartmentType getType() {
         return type;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+        return true;
     }
 
     @Override
