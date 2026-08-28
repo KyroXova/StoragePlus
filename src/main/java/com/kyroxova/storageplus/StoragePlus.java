@@ -1,0 +1,31 @@
+package com.kyroxova.storageplus;
+
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+@Mod("storageplus")
+public class StoragePlus {
+
+    public static final String MOD_ID = "storageplus";
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    public StoragePlus() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private void setup(final FMLCommonSetupEvent event) {
+        LOGGER.info("Storage Plus (MC 1.16.5) common setup...");
+    }
+
+    private void doClientStuff(final FMLClientSetupEvent event) {
+        LOGGER.info("Storage Plus (MC 1.16.5) client setup...");
+    }
+}
