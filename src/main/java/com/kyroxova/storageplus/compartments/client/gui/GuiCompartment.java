@@ -7,31 +7,34 @@ import com.kyroxova.storageplus.network.MessageChangePage;
 import com.kyroxova.storageplus.network.PacketHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiCompartment extends GuiContainer {
 
-    private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation("storageplus", "textures/gui/compartment.png");
     private final ContainerCompartment container;
     private final TileEntityCompartment tileEntity;
     private final CompartmentType type;
 
-    private GuiButton buttonPrev;
-    private GuiButton buttonNext;
+    private GuiPageButton buttonPrev;
+    private GuiPageButton buttonNext;
 
     public GuiCompartment(InventoryPlayer playerInventory, TileEntityCompartment tileEntity) {
         super(new ContainerCompartment(playerInventory, tileEntity));
         this.tileEntity = tileEntity;
         this.type = tileEntity.getType();
         this.container = (ContainerCompartment) this.inventorySlots;
-        this.xSize = 204;
-        this.ySize = 204;
+        this.xSize = 194;
+        this.ySize = 218;
     }
 
     @Override
@@ -43,8 +46,8 @@ public class GuiCompartment extends GuiContainer {
         int top = (this.height - this.ySize) / 2;
 
         this.buttonList.clear();
-        this.buttonPrev = new GuiButton(0, left + 140, top + 5, 20, 12, "<");
-        this.buttonNext = new GuiButton(1, left + 165, top + 5, 20, 12, ">");
+        this.buttonPrev = new GuiPageButton(0, left + 124, top + 4, false);
+        this.buttonNext = new GuiPageButton(1, left + 174, top + 4, true);
 
         this.buttonList.add(buttonPrev);
         this.buttonList.add(buttonNext);
@@ -78,21 +81,70 @@ public class GuiCompartment extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         updateButtonStates();
 
-        String containerTitle = I18n.format("tile.storageplus.compartment_" + type.getName() + ".name");
-        this.fontRendererObj.drawString(containerTitle, 12, 6, 0x404040);
-        this.fontRendererObj.drawString(I18n.format("container.inventory"), 21, this.ySize - 94, 0x404040);
+        // 1. Container Title (Uppercase bold look)
+        String containerTitle = I18n.format("tile.storageplus.compartment_" + type.getName() + ".name").toUpperCase();
+        this.fontRendererObj.drawString(containerTitle, 26, 7, 0x373737);
+
+        // 2. Page Indicator inside Pill (x: 139, y: 7)
+        String pageText = (container.getCurrentPage() + 1) + " / " + container.getTotalPages();
+        int textWidth = this.fontRendererObj.getStringWidth(pageText);
+        int pillCenterX = 139 + (34 - textWidth) / 2;
+        this.fontRendererObj.drawString(pageText, pillCenterX, 7, 0xFFFFFF);
+
+        // 3. Inventory Label
+        this.fontRendererObj.drawString(I18n.format("container.inventory"), 17, 113, 0x373737);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(CHEST_GUI_TEXTURE);
+        this.mc.getTextureManager().bindTexture(GUI_TEXTURE);
 
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
+        int left = (this.width - this.xSize) / 2;
+        int top = (this.height - this.ySize) / 2;
 
-        // Draw background panel using vanilla container skin slices
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, 114);
-        this.drawTexturedModalRect(k, l + 114, 0, 126, this.xSize, 90);
+        // Draw Main GUI Panel
+        this.drawTexturedModalRect(left, top, 0, 0, this.xSize, this.ySize);
+
+        // Draw Page Indicator Pill Background at (left + 138, top + 4)
+        this.drawTexturedModalRect(left + 138, top + 4, 196, 0, 36, 14);
+
+        // Draw Container Icon at (left + 6, top + 3)
+        if (this.tileEntity.getBlockType() != null) {
+            ItemStack stack = new ItemStack(this.tileEntity.getBlockType(), 1, this.tileEntity.getBlockMetadata());
+            if (stack.getItem() != null) {
+                RenderHelper.enableGUIStandardItemLighting();
+                itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), stack, left + 6, top + 3);
+                RenderHelper.disableStandardItemLighting();
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static class GuiPageButton extends GuiButton {
+        private final boolean isNext;
+
+        public GuiPageButton(int id, int x, int y, boolean isNext) {
+            super(id, x, y, 14, 14, "");
+            this.isNext = isNext;
+        }
+
+        @Override
+        public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+            if (this.visible) {
+                mc.getTextureManager().bindTexture(GUI_TEXTURE);
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                this.field_146123_n = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+
+                int u = 196;
+                if (!this.enabled) {
+                    u = 228;
+                } else if (this.field_146123_n) {
+                    u = 212;
+                }
+                int v = isNext ? 32 : 16;
+                this.drawTexturedModalRect(this.xPosition, this.yPosition, u, v, this.width, this.height);
+            }
+        }
     }
 }
