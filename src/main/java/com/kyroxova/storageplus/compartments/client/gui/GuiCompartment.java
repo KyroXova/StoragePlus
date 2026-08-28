@@ -110,6 +110,9 @@ public class GuiCompartment extends ContainerScreen<ContainerCompartment> {
         // Draw Page Indicator Pill Background at (left + 138, top + 4)
         this.blit(matrixStack, left + 138, top + 4, 196, 0, 36, 14);
 
+        // Draw Decorative StoragePlus Frame Atlas border
+        StoragePlusFrameRenderer.drawFrame(matrixStack, left, top, this.imageWidth, this.imageHeight);
+
         // Draw Container Icon at (left + 6, top + 3)
         ItemStack stack = new ItemStack(ModBlocks.getCompartmentBlock(this.type).get());
         this.itemRenderer.renderAndDecorateItem(stack, left + 6, top + 3);
