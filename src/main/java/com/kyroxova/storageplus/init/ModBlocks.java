@@ -29,4 +29,20 @@ public class ModBlocks {
             "compartment_stainless_steel", () -> new BlockCompartment(CompartmentType.STAINLESS_STEEL));
     public static final RegistryObject<BlockCompartment> COMPARTMENT_EMERALD = BLOCKS.register(
             "compartment_emerald", () -> new BlockCompartment(CompartmentType.EMERALD));
+
+    public static RegistryObject<BlockCompartment> getCompartmentBlock(CompartmentType type) {
+        switch (type) {
+            case COPPER: return COMPARTMENT_COPPER;
+            case IRON: return COMPARTMENT_IRON;
+            case STEEL: return COMPARTMENT_STEEL;
+            case GOLD: return COMPARTMENT_GOLD;
+            case DARK_STEEL: return COMPARTMENT_DARK_STEEL;
+            case DIAMOND: return COMPARTMENT_DIAMOND;
+            case STAINLESS_STEEL: return COMPARTMENT_STAINLESS_STEEL;
+            case EMERALD: return COMPARTMENT_EMERALD;
+            case WOOD:
+            default:
+                return COMPARTMENT_WOOD;
+        }
+    }
 }

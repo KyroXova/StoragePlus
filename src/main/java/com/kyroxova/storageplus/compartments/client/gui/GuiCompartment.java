@@ -27,7 +27,7 @@ public class GuiCompartment extends ContainerScreen<ContainerCompartment> {
 
     public GuiCompartment(ContainerCompartment container, PlayerInventory playerInventory, ITextComponent title) {
         super(container, playerInventory, title);
-        this.type = container.getType();
+        this.type = container.getCompartmentType();
         this.imageWidth = 194;
         this.imageHeight = 218;
         this.inventoryLabelX = 17;
@@ -111,10 +111,8 @@ public class GuiCompartment extends ContainerScreen<ContainerCompartment> {
         this.blit(matrixStack, left + 138, top + 4, 196, 0, 36, 14);
 
         // Draw Container Icon at (left + 6, top + 3)
-        if (ModBlocks.COMPARTMENTS.containsKey(this.type)) {
-            ItemStack stack = new ItemStack(ModBlocks.COMPARTMENTS.get(this.type).get());
-            this.itemRenderer.renderAndDecorateItem(stack, left + 6, top + 3);
-        }
+        ItemStack stack = new ItemStack(ModBlocks.getCompartmentBlock(this.type).get());
+        this.itemRenderer.renderAndDecorateItem(stack, left + 6, top + 3);
     }
 
     public static class PageButton extends Button {

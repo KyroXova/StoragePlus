@@ -20,7 +20,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileEntityCompartment extends TileEntity implements IInventory, INamedContainerProvider {
 
-    private CompartmentType type;
+    private CompartmentType compartmentType;
     private NonNullList<ItemStack> inventory;
     private ITextComponent customName;
 
@@ -30,16 +30,16 @@ public class TileEntityCompartment extends TileEntity implements IInventory, INa
 
     public TileEntityCompartment(CompartmentType type) {
         super(ModTileEntities.COMPARTMENT.get());
-        this.type = type;
+        this.compartmentType = type;
         this.inventory = NonNullList.withSize(type.getTotalSlots(), ItemStack.EMPTY);
     }
 
-    public CompartmentType getType() {
-        return type;
+    public CompartmentType getCompartmentType() {
+        return compartmentType;
     }
 
-    public void setType(CompartmentType type) {
-        this.type = type;
+    public void setCompartmentType(CompartmentType type) {
+        this.compartmentType = type;
         NonNullList<ItemStack> oldInv = this.inventory;
         this.inventory = NonNullList.withSize(type.getTotalSlots(), ItemStack.EMPTY);
         if (oldInv != null) {
@@ -117,7 +117,7 @@ public class TileEntityCompartment extends TileEntity implements IInventory, INa
 
     @Override
     public ITextComponent getDisplayName() {
-        return this.customName != null ? this.customName : new TranslationTextComponent("block.storageplus." + this.type.getRegistryName());
+        return this.customName != null ? this.customName : new TranslationTextComponent("block.storageplus." + this.compartmentType.getRegistryName());
     }
 
     public void setCustomName(ITextComponent name) {
@@ -136,11 +136,11 @@ public class TileEntityCompartment extends TileEntity implements IInventory, INa
         if (compound.contains("CompartmentType")) {
             int typeOrdinal = compound.getInt("CompartmentType");
             if (typeOrdinal >= 0 && typeOrdinal < CompartmentType.values().length) {
-                setType(CompartmentType.values()[typeOrdinal]);
+                setCompartmentType(CompartmentType.values()[typeOrdinal]);
             }
         }
 
-        this.inventory = NonNullList.withSize(this.type.getTotalSlots(), ItemStack.EMPTY);
+        this.inventory = NonNullList.withSize(this.compartmentType.getTotalSlots(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.inventory);
 
         if (compound.contains("CustomName", 8)) {
@@ -152,7 +152,7 @@ public class TileEntityCompartment extends TileEntity implements IInventory, INa
     public CompoundNBT save(CompoundNBT compound) {
         super.save(compound);
 
-        compound.putInt("CompartmentType", this.type.ordinal());
+        compound.putInt("CompartmentType", this.compartmentType.ordinal());
         ItemStackHelper.saveAllItems(compound, this.inventory);
 
         if (this.customName != null) {

@@ -18,7 +18,7 @@ public class ContainerCompartment extends Container {
 
     private final IInventory containerInventory;
     private final TileEntityCompartment tileEntity;
-    private final CompartmentType type;
+    private final CompartmentType compartmentType;
     private int currentPage = 0;
 
     public static final int ROWS_PER_PAGE = 5;
@@ -33,13 +33,13 @@ public class ContainerCompartment extends Container {
     }
 
     public ContainerCompartment(int windowId, PlayerInventory playerInventory, TileEntityCompartment tileEntity) {
-        this(windowId, playerInventory, tileEntity, tileEntity.getType(), tileEntity);
+        this(windowId, playerInventory, tileEntity, tileEntity.getCompartmentType(), tileEntity);
     }
 
     public ContainerCompartment(int windowId, PlayerInventory playerInventory, IInventory containerInventory, CompartmentType type, TileEntityCompartment tileEntity) {
         super(ModContainers.COMPARTMENT.get(), windowId);
         this.containerInventory = containerInventory;
-        this.type = type;
+        this.compartmentType = type;
         this.tileEntity = tileEntity;
 
         checkContainerSize(containerInventory, type.getTotalSlots());
@@ -86,21 +86,21 @@ public class ContainerCompartment extends Container {
     }
 
     public void setCurrentPage(int page) {
-        if (page >= 0 && page < type.getTotalPages()) {
+        if (page >= 0 && page < compartmentType.getTotalPages()) {
             this.currentPage = page;
         }
     }
 
     public int getTotalPages() {
-        return type.getTotalPages();
+        return compartmentType.getTotalPages();
     }
 
     public IInventory getTileEntity() {
         return containerInventory;
     }
 
-    public CompartmentType getType() {
-        return type;
+    public CompartmentType getCompartmentType() {
+        return compartmentType;
     }
 
     @Override
