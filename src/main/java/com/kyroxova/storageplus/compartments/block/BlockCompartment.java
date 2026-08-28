@@ -28,12 +28,21 @@ public class BlockCompartment extends Block {
     public BlockCompartment(CompartmentType type) {
         super(AbstractBlock.Properties.of(type == CompartmentType.WOOD ? Material.WOOD : Material.METAL)
                 .strength(type.getHardness(), type.getResistance())
-                .sound(type == CompartmentType.WOOD ? SoundType.WOOD : SoundType.METAL));
+                .sound(type == CompartmentType.WOOD ? SoundType.WOOD : SoundType.METAL)
+                .noOcclusion()
+                .isViewBlocking((state, reader, pos) -> false)
+                .isSuffocating((state, reader, pos) -> false)
+                .isRedstoneConductor((state, reader, pos) -> false));
         this.type = type;
     }
 
     public CompartmentType getType() {
         return type;
+    }
+
+    @Override
+    public boolean useShapeForLightOcclusion(BlockState state) {
+        return true;
     }
 
     @Override

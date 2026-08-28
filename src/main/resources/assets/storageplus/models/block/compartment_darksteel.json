@@ -1,4 +1,5 @@
-{
+{\
+    "ambientocclusion": false,\
     "parent":  "block/block",
     "textures":  {
                      "particle":  "storageplus:block/compartments/compartment_darksteel",
