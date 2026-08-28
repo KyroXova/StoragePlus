@@ -65,6 +65,12 @@ public class BlockCompartment extends Block {
 
     @SideOnly(Side.CLIENT)
     @Override
+    public float getAmbientOcclusionLightValue(IBlockState state) {
+        return 1.0F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
