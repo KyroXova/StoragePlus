@@ -45,25 +45,25 @@ public class ContainerCompartment extends Container {
         checkContainerSize(containerInventory, type.getTotalSlots());
         containerInventory.startOpen(playerInventory.player);
 
-        // 50 Compartment Slots (5 rows x 10 columns)
+        // 50 Compartment Slots (5 rows x 10 columns) at (8, 22)
         for (int row = 0; row < ROWS_PER_PAGE; row++) {
             for (int col = 0; col < COLS_PER_PAGE; col++) {
                 int slotIndex = col + row * COLS_PER_PAGE;
-                this.addSlot(new SlotCompartment(this, containerInventory, slotIndex, 12 + col * 18, 20 + row * 18));
+                this.addSlot(new SlotCompartment(this, containerInventory, slotIndex, 8 + col * 18, 22 + row * 18));
             }
         }
 
-        // Player Inventory (3 rows x 9 columns)
-        int playerInvY = 122;
-        int playerInvX = 21;
+        // Player Inventory (3 rows x 9 columns) at (17, 125)
+        int playerInvX = 17;
+        int playerInvY = 125;
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, playerInvX + col * 18, playerInvY + row * 18));
             }
         }
 
-        // Player Hotbar (9 slots)
-        int hotbarY = 180;
+        // Player Hotbar (9 slots) at (17, 183)
+        int hotbarY = 183;
         for (int col = 0; col < 9; col++) {
             this.addSlot(new Slot(playerInventory, col, playerInvX + col * 18, hotbarY));
         }
