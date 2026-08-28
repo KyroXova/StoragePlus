@@ -79,5 +79,6 @@ runs/
 # Wrapper jar
 !gradle-wrapper.jar
 
-# Local version worktrees
+# Local version worktrees and raw imports
 forge/
+imports/
