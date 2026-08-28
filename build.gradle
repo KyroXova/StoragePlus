@@ -1,0 +1,7 @@
+// Storage Plus Root Project
+plugins {
+    id 'base'
+}
+
+group = 'com.kyroxova.storageplus'
+version = '1.0.0-dev'
