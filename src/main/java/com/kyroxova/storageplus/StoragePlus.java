@@ -1,7 +1,12 @@
 package com.kyroxova.storageplus;
 
+import com.kyroxova.storageplus.compartments.client.gui.GuiCompartment;
 import com.kyroxova.storageplus.init.ModBlocks;
+import com.kyroxova.storageplus.init.ModContainers;
 import com.kyroxova.storageplus.init.ModItems;
+import com.kyroxova.storageplus.init.ModTileEntities;
+import com.kyroxova.storageplus.network.PacketHandler;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +27,8 @@ public class StoragePlus {
 
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModTileEntities.TILE_ENTITIES.register(modEventBus);
+        ModContainers.CONTAINERS.register(modEventBus);
 
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::doClientStuff);
@@ -31,9 +38,13 @@ public class StoragePlus {
 
     private void setup(final FMLCommonSetupEvent event) {
         LOGGER.info("Storage Plus (MC 1.16.5) common setup...");
+        event.enqueueWork(PacketHandler::init);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         LOGGER.info("Storage Plus (MC 1.16.5) client setup...");
+        event.enqueueWork(() -> {
+            ScreenManager.register(ModContainers.COMPARTMENT.get(), GuiCompartment::new);
+        });
     }
 }
