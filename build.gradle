@@ -1,33 +1,30 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            name = "Forge"
-            url = "https://maven.minecraftforge.net/"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
+plugins {
+    id 'java-library'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.4.9'
 }
-
-apply plugin: 'net.minecraftforge.gradle.forge'
 
 group = mod_group_id
 version = "${minecraft_version}-${mod_version}"
 archivesBaseName = mod_id
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
 
 minecraft {
-    version = "${minecraft_version}-${forge_version}"
-    runDir = "run"
-    mappings = mappings_version
+    mcVersion = '1.12.2'
+    username = 'Developer'
+    extraRunJvmArguments = ["-Xmx2G"]
 }
 
 repositories {
     mavenCentral()
+    maven {
+        name = "GTNH Maven"
+        url = "https://nexus.gtnewhorizons.com/repository/public/"
+    }
 }
 
 dependencies {
@@ -35,10 +32,10 @@ dependencies {
 
 processResources {
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property "mcversion", "1.12.2"
 
     filesMatching('mcmod.info') {
-        expand 'version': project.version, 'mcversion': project.minecraft.version,
+        expand 'version': project.version, 'mcversion': "1.12.2",
                'mod_id': mod_id, 'mod_name': mod_name, 'mod_description': mod_description,
                'mod_authors': mod_authors, 'mod_url': mod_url
     }
