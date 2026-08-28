@@ -1,0 +1,7 @@
+{
+    "variants":  {
+                     "":  {
+                              "model":  "storageplus:block/compartment_steel"
+                          }
+                 }
+}
