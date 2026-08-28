@@ -1,6 +1,9 @@
 package com.kyroxova.storageplus;
 
+import com.kyroxova.storageplus.init.ModBlocks;
+import com.kyroxova.storageplus.init.ModItems;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -15,8 +18,13 @@ public class StoragePlus {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public StoragePlus() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModBlocks.BLOCKS.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
+
+        modEventBus.addListener(this::setup);
+        modEventBus.addListener(this::doClientStuff);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
