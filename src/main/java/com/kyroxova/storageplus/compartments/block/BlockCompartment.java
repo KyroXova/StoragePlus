@@ -55,6 +55,12 @@ public class BlockCompartment extends BlockContainer {
 
     @SideOnly(Side.CLIENT)
     @Override
+    public float getAmbientOcclusionLightValue() {
+        return 1.0F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
     public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
         return true;
     }
