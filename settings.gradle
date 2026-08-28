@@ -1,1 +1,19 @@
-rootProject.name = 'StoragePlus'
+pluginManagement {
+    repositories {
+        maven {
+            name = "GTNH Maven"
+            url = "https://nexus.gtnewhorizons.com/repository/public/"
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'com.gtnewhorizons.retrofuturagradle') {
+                useModule("com.gtnewhorizons:retrofuturagradle:${requested.version ?: '1.4.9'}")
+            }
+        }
+    }
+}
+
+rootProject.name = 'StoragePlus-1.7.9'
