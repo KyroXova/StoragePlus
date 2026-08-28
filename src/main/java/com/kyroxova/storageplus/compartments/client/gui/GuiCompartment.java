@@ -5,8 +5,7 @@ import com.kyroxova.storageplus.compartments.container.ContainerCompartment;
 import com.kyroxova.storageplus.compartments.tile.TileEntityCompartment;
 import com.kyroxova.storageplus.network.MessageChangePage;
 import com.kyroxova.storageplus.network.PacketHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.kyroxova.storageplus.reference.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -16,29 +15,30 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiCompartment extends GuiContainer {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation("storageplus", "textures/gui/compartment.png");
-    private final ContainerCompartment container;
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(Reference.MOD_ID, "textures/gui/compartment.png");
     private final TileEntityCompartment tileEntity;
     private final CompartmentType type;
+    private final ContainerCompartment container;
 
     private GuiPageButton buttonPrev;
     private GuiPageButton buttonNext;
 
     public GuiCompartment(InventoryPlayer playerInventory, TileEntityCompartment tileEntity) {
         super(new ContainerCompartment(playerInventory, tileEntity));
+        this.container = (ContainerCompartment) this.inventorySlots;
         this.tileEntity = tileEntity;
         this.type = tileEntity.getType();
-        this.container = (ContainerCompartment) this.inventorySlots;
         this.xSize = 194;
         this.ySize = 218;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void initGui() {
         super.initGui();
 
@@ -48,7 +48,6 @@ public class GuiCompartment extends GuiContainer {
         this.buttonList.clear();
         this.buttonPrev = new GuiPageButton(0, left + 124, top + 4, false);
         this.buttonNext = new GuiPageButton(1, left + 174, top + 4, true);
-
         this.buttonList.add(buttonPrev);
         this.buttonList.add(buttonNext);
 
@@ -69,12 +68,19 @@ public class GuiCompartment extends GuiContainer {
             int newPage = currentPage - 1;
             container.setCurrentPage(newPage);
             PacketHandler.INSTANCE.sendToServer(new MessageChangePage(newPage));
+            updateButtonStates();
         } else if (button.id == 1 && currentPage < container.getTotalPages() - 1) {
             int newPage = currentPage + 1;
             container.setCurrentPage(newPage);
             PacketHandler.INSTANCE.sendToServer(new MessageChangePage(newPage));
+            updateButtonStates();
         }
-        updateButtonStates();
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -109,6 +115,9 @@ public class GuiCompartment extends GuiContainer {
         // Draw Page Indicator Pill Background at (left + 138, top + 4)
         this.drawTexturedModalRect(left + 138, top + 4, 196, 0, 36, 14);
 
+        // Draw Decorative StoragePlus Frame Atlas border
+        StoragePlusFrameRenderer.drawFrame(left, top, this.xSize, this.ySize);
+
         // Draw Container Icon at (left + 6, top + 3)
         if (this.tileEntity.getBlockType() != null) {
             ItemStack stack = new ItemStack(this.tileEntity.getBlockType(), 1, this.tileEntity.getBlockMetadata());
@@ -142,7 +151,7 @@ public class GuiCompartment extends GuiContainer {
                 } else if (this.field_146123_n) {
                     u = 212;
                 }
-                int v = isNext ? 32 : 16;
+                int v = this.isNext ? 32 : 16;
                 this.drawTexturedModalRect(this.xPosition, this.yPosition, u, v, this.width, this.height);
             }
         }
