@@ -1,0 +1,13 @@
+# Storage Plus Language File - en_US
+
+itemGroup.storageplus=Storage Plus
+
+tile.storageplus.compartment_wood.name=Wood Compartment
+tile.storageplus.compartment_copper.name=Copper Compartment
+tile.storageplus.compartment_iron.name=Iron Compartment
+tile.storageplus.compartment_steel.name=Steel Compartment
+tile.storageplus.compartment_gold.name=Gold Compartment
+tile.storageplus.compartment_darksteel.name=Dark Steel Compartment
+tile.storageplus.compartment_diamond.name=Diamond Compartment
+tile.storageplus.compartment_stainless_steel.name=Stainless Steel Compartment
+tile.storageplus.compartment_emerald.name=Emerald Compartment
