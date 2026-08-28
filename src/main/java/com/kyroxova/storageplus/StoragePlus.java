@@ -1,5 +1,7 @@
 package com.kyroxova.storageplus;
 
+import com.kyroxova.storageplus.init.ModBlocks;
+import com.kyroxova.storageplus.init.ModItems;
 import com.kyroxova.storageplus.proxy.CommonProxy;
 import com.kyroxova.storageplus.reference.Reference;
 import cpw.mods.fml.common.Mod;
@@ -30,6 +32,10 @@ public class StoragePlus {
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         logger.info("Storage Plus (MC 1.7.9) pre-initialization...");
+
+        ModBlocks.init();
+        ModItems.init();
+
         proxy.preInit(event);
     }
 
