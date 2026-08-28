@@ -26,7 +26,7 @@ public class BlockCompartment extends Block {
         super(type == CompartmentType.WOOD ? Material.WOOD : Material.IRON);
         this.type = type;
 
-        this.setUnlocalizedName(Reference.MOD_ID + "." + type.getRegistryName());
+        this.setTranslationKey(Reference.MOD_ID + "." + type.getRegistryName());
         this.setRegistryName(type.getRegistryName());
         this.setHardness(type.getHardness());
         this.setResistance(type.getResistance());

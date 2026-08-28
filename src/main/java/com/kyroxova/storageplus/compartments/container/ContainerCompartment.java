@@ -78,7 +78,8 @@ public class ContainerCompartment extends Container {
 
     @Override
     public void addListener(IContainerListener listener) {
-        super.addListener(listener);\n        listener.sendWindowProperty(this, 0, this.currentPage);
+        super.addListener(listener);
+        listener.sendWindowProperty(this, 0, this.currentPage);
     }
 
     @Override
