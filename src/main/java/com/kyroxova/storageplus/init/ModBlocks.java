@@ -2,10 +2,13 @@ package com.kyroxova.storageplus.init;
 
 import com.kyroxova.storageplus.compartments.CompartmentType;
 import com.kyroxova.storageplus.compartments.block.BlockCompartment;
+import com.kyroxova.storageplus.compartments.tile.TileEntityCompartment;
 import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,5 +50,6 @@ public class ModBlocks {
         for (BlockCompartment block : COMPARTMENTS) {
             event.getRegistry().register(block);
         }
+        GameRegistry.registerTileEntity(TileEntityCompartment.class, new ResourceLocation("storageplus", "compartment"));
     }
 }
